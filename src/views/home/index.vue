@@ -11,5 +11,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-
+.home {
+  color: $success-color;
+}
 </style>

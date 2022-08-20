@@ -1,4 +1,18 @@
 module.exports = {
+  devServer: {
+    // https://eduboss.lagounews.com
+    // https://edufront.lagounews.com
+    proxy: {
+      '/boss': {
+        target: 'http://eduboss.lagounews.com',
+        changeOrigin: true
+      },
+      '/front': {
+        target: 'http://edufront.lagounews.com',
+        changeOrigin: true
+      }
+    }
+  },
   css: {
     loaderOptions: {
       // 默认情况下 `sass` 选项会同时对 `sass` 和 `scss` 语法同时生效
