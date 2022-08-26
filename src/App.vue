@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>hello vue2 & ts</h1>
     <router-view/>
   </div>
 </template>
