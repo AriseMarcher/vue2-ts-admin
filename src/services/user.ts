@@ -2,6 +2,7 @@
  * 用户相关请求接口
  */
 import request from '@/utils/request'
+import { AxiosPromise } from 'axios'
 import qs from 'qs'
 
 interface User {
@@ -9,7 +10,7 @@ interface User {
   password: string
 }
 
-export const login = (data: User): unknown => {
+export const login = (data: User): AxiosPromise => {
   return request({
     method: 'post',
     url: '/front/user/login',
@@ -19,5 +20,12 @@ export const login = (data: User): unknown => {
     //    则 Content-Type 会被设置为 application/x-www-form-urlencoded
     // 如果 data 是 FormData 对象，则 Content-Type 是 multipart/form-data
     data: qs.stringify(data) // axios 默认发送的是 application/json
+  })
+}
+
+export const getUserInfo = (): AxiosPromise => {
+  return request({
+    method: 'GET',
+    url: '/front/user/getInfo'
   })
 }

@@ -78,7 +78,10 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!store.state.user) {
       next({
-        name: 'login'
+        name: 'login',
+        query: { // 通过 url 传递查询字符串参数
+          redirect: to.fullPath // 把登录成功需要返回的页面告诉登录页面
+        }
       })
     } else {
       next()

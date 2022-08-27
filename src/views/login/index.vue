@@ -59,19 +59,16 @@ export default Vue.extend({
 
         this.isLoginLoading = true
         const { data } = await login(this.form)
-        console.log(JSON.parse(data.content))
         if (data.state !== 1) {
           this.$message.error(data.message)
         } else {
           // 登录成功 记录登录状态 状态需要能够全局访问 （Vuex）
           // 然后在访问需要登录的页面的时候判断有没有登录状态 （路由拦截器）
-          this.$router.push({ name: 'home' })
-          this.$message.success('登录成功')
           this.$store.commit('setUser', data.content)
+          this.$router.push(this.$route.query.redirect as string || '/')
+          this.$message.success('登录成功')
         }
-      } catch (err) {
-        console.log('登录失败', err)
-      }
+      } catch (err) {}
 
       this.isLoginLoading = false
     }
