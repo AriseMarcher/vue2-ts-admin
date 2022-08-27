@@ -29,8 +29,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Form } from 'element-ui'
-import request from '@/utils/request'
-import qs from 'qs'
+import { login } from '@/services/user'
 
 export default Vue.extend({
   name: 'LoginIndex',
@@ -59,17 +58,17 @@ export default Vue.extend({
         await (this.$refs.form as Form).validate()
 
         this.isLoginLoading = true
-        const { data } = await request({
-          method: 'post',
-          url: '/front/user/login',
-          headers: { 'content-type': 'application/x-www-form-urlencoded' },
-          data: qs.stringify(this.form) // axios 默认发送的是 application/json
-        })
+        const { data } = await login(this.form)
+        console.log(JSON.parse(data.content))
         if (data.state !== 1) {
-          return this.$message.error(data.message)
+          this.$message.error(data.message)
+        } else {
+          // 登录成功 记录登录状态 状态需要能够全局访问 （Vuex）
+          // 然后在访问需要登录的页面的时候判断有没有登录状态 （路由拦截器）
+          this.$router.push({ name: 'home' })
+          this.$message.success('登录成功')
+          this.$store.commit('setUser', data.content)
         }
-        this.$router.push({ name: 'home' })
-        this.$message.success('登录成功')
       } catch (err) {
         console.log('登录失败', err)
       }
