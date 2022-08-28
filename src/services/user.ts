@@ -4,13 +4,9 @@
 import request from '@/utils/request'
 import { AxiosPromise } from 'axios'
 import qs from 'qs'
+import { UserLogin } from '@/interfaces/user'
 
-interface User {
-  phone: string
-  password: string
-}
-
-export const login = (data: User): AxiosPromise => {
+export const login = (data: UserLogin): AxiosPromise => {
   return request({
     method: 'post',
     url: '/front/user/login',
