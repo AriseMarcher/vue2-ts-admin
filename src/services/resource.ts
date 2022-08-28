@@ -9,3 +9,10 @@ export const getResourcePages = (data: ReqResourceParams): AxiosPromise => {
     data
   })
 }
+
+export const deleteCategories = (id: string): AxiosPromise => {
+  return request({
+    method: 'DELETE',
+    url: `/boss/resource/${id}`
+  })
+}

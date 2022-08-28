@@ -30,7 +30,7 @@
         </el-form>
       </div>
       <div class="resource-operate">
-        <el-button size="mini">添加</el-button>
+        <el-button size="mini" @click="addResource">添加</el-button>
         <el-button size="mini">资源分类</el-button>
       </div>
       <el-table
@@ -88,15 +88,30 @@
         :total="totalCount">
       </el-pagination>
     </el-card>
+    <!-- 添加 OR 编辑 分类弹框 -->
+    <add-or-edit-resource
+      :isShowResourceDialog="isShowResourceDialog"
+      :resourceCategories="resourceCategories"
+      :handlingForm="handlingForm"
+      :isAddOrEdit="isAddOrEdit"
+      @handleCloseDialog="handleCloseDialog"
+    ></add-or-edit-resource>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { getResourcePages } from '@/services/resource'
+import { getResourcePages, deleteCategories } from '@/services/resource'
 import { getResourceCategories } from '@/services/resource-category'
-import { ResourceItem } from '@/interfaces/resource'
+import {
+  ResourceItem,
+  resourceItem,
+  requestAddResource,
+  RequestAddResource
+} from '@/interfaces/resource-categories'
 import { Form } from 'element-ui'
+import AddOrEditResource from './AddOrEditResource.vue'
+import * as _ from 'lodash/fp'
 
 export default Vue.extend({
   name: 'ResourceList',
@@ -112,8 +127,14 @@ export default Vue.extend({
       },
       totalCount: 0,
       resourceCategories: [],
-      isLoading: true
+      isLoading: true,
+      isShowResourceDialog: false,
+      handlingForm: resourceItem,
+      isAddOrEdit: false // true 添加 false 编辑
     }
+  },
+  components: {
+    AddOrEditResource
   },
   created () {
     this.loadResource()
@@ -136,10 +157,18 @@ export default Vue.extend({
       }
     },
     handleEdit (item: ResourceItem) {
-      console.log('handleEdit', item)
+      (this.handlingForm as ResourceItem) = _.cloneDeep(item)
+      this.isAddOrEdit = false
+      this.isShowResourceDialog = true
     },
-    handleDelete (item: ResourceItem) {
-      console.log('handleDelete', item)
+    async handleDelete (item: ResourceItem) {
+      const { data } = await deleteCategories(item.id as string)
+      if (data.code === '000000') {
+        this.$message.success(data.mesg)
+        this.loadResource()
+      } else {
+        this.$message.error(data.mesg)
+      }
     },
     onSubmit () {
       this.form.current = 1
@@ -158,6 +187,15 @@ export default Vue.extend({
     handleCurrentChange (val: number) {
       this.form.current = val
       this.loadResource()
+    },
+    addResource () {
+      (this.handlingForm as RequestAddResource) = _.cloneDeep(requestAddResource)
+      this.isAddOrEdit = true
+      this.isShowResourceDialog = true
+    },
+    handleCloseDialog (isRefresh: boolean) {
+      !!isRefresh && this.loadResource()
+      this.isShowResourceDialog = false
     }
   }
 })
