@@ -7,28 +7,11 @@
       @close="handleClose"
     >
       <el-form ref="form" :model="handlingForm" label-width="80px">
-        <el-form-item label="资源名称">
+        <el-form-item label="名称">
           <el-input v-model="handlingForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="资源路径">
-          <el-input v-model="handlingForm.url"></el-input>
-        </el-form-item>
-        <el-form-item label="资源分类">
-          <el-select
-            v-model="handlingForm.categoryId"
-            placeholder="请选择资源分类"
-            clearable=""
-          >
-            <el-option
-              v-for="item in resourceCategories"
-              :label="item.name"
-              :value="item.id"
-              :key="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="描述">
-          <el-input type="textarea" :rows="2" v-model="handlingForm.description"></el-input>
+        <el-form-item label="排序">
+          <el-input v-model="handlingForm.sort"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -41,7 +24,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { saveOrUpdate } from '@/services/resource-category'
+import { SaveOrderUpdate } from '@/services/resource-category'
 
 export default Vue.extend({
   name: 'SaveOrderUpdate',
@@ -53,10 +36,6 @@ export default Vue.extend({
     isAddOrEdit: {
       type: Boolean,
       default: false
-    },
-    resourceCategories: {
-      type: Array,
-      required: true
     },
     handlingForm: {
       type: Object,
@@ -73,7 +52,7 @@ export default Vue.extend({
       this.$emit('handleCloseDialog', isRefresh)
     },
     async confirmDialog () {
-      const { data } = await saveOrUpdate(this.handlingForm)
+      const { data } = await SaveOrderUpdate(this.handlingForm)
       if (data.code === '000000') {
         this.handleClose(true)
       } else {

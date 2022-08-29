@@ -31,7 +31,7 @@
       </div>
       <div class="resource-operate">
         <el-button size="mini" @click="addResource">添加</el-button>
-        <el-button size="mini">资源分类</el-button>
+        <el-button size="mini" @click="gotoCategory">资源分类</el-button>
       </div>
       <el-table
         :data="resources"
@@ -192,6 +192,11 @@ export default Vue.extend({
       (this.handlingForm as RequestAddResource) = _.cloneDeep(requestAddResource)
       this.isAddOrEdit = true
       this.isShowResourceDialog = true
+    },
+    gotoCategory () {
+      this.$router.push({
+        name: 'resourceCategory'
+      })
     },
     handleCloseDialog (isRefresh: boolean) {
       !!isRefresh && this.loadResource()

@@ -19,3 +19,16 @@ export const saveOrUpdate = (data: ResourceItem | RequestAddResource): AxiosProm
     data
   })
 }
+
+export const SaveOrderUpdate = (
+  data: {
+    name: string
+    sort: number
+  } | RequestAddResource
+): AxiosPromise => {
+  return request({
+    method: 'POST',
+    url: 'boss/resource/category/saveOrderUpdate',
+    data
+  })
+}

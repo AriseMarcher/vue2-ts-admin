@@ -16,3 +16,10 @@ export const deleteCategories = (id: string): AxiosPromise => {
     url: `/boss/resource/${id}`
   })
 }
+
+export const deleteResourceCategory = (id: string): AxiosPromise => {
+  return request({
+    method: 'DELETE',
+    url: `/boss/resource/category/${id}`
+  })
+}

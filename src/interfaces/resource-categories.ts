@@ -1,9 +1,9 @@
 export interface RequestAddResource {
   categoryId: number | null
-  description: string
+  description?: string
   id: string | null
   name: string
-  url: string
+  url?: string
 }
 
 export interface ResourceItem extends RequestAddResource {
