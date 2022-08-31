@@ -33,3 +33,29 @@ export const deleteMenu = (id: number): AxiosPromise => {
     url: `/boss/menu/${id}`
   })
 }
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const getMenuNodeList = () => {
+  return request({
+    method: 'GET',
+    url: '/boss/menu/getMenuNodeList'
+  })
+}
+
+export const allocateRoleMenus = (data: any): AxiosPromise => {
+  return request({
+    method: 'POST',
+    url: '/boss/menu/allocateRoleMenus',
+    data
+  })
+}
+
+export const getRoleMenus = (roleId: string): AxiosPromise => {
+  return request({
+    method: 'GET',
+    url: '/boss/menu/getRoleMenus',
+    params: {
+      roleId
+    }
+  })
+}

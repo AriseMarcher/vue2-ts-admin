@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
 import store from '@/store'
+import RoleRoutes from './role'
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -21,11 +22,6 @@ const routes: Array<RouteConfig> = [
         path: '', // 默认子路由
         name: 'home',
         component: () => import(/* webpackChunkName: 'home' */ '@/views/home/index.vue')
-      },
-      {
-        path: '/role',
-        name: 'role',
-        component: () => import(/* webpackChunkName: 'role' */ '@/views/role/index.vue')
       },
       {
         path: '/menu',
@@ -71,7 +67,8 @@ const routes: Array<RouteConfig> = [
         path: '/menu/:id/edit',
         name: 'menu-edit',
         component: () => import(/* webpackChunkName: 'menu-create-edit' */ '@/views/menu/menu-edit.vue')
-      }
+      },
+      ...RoleRoutes
     ]
   },
   {

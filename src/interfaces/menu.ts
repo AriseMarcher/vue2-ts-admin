@@ -24,3 +24,10 @@ export interface MenuItem {
   updatedBy: string
   updatedTime: string
 }
+
+export interface MenuCheapItem {
+  id: string
+  level: number
+  selected: boolean
+  subMenuList: Array<MenuCheapItem>
+}
