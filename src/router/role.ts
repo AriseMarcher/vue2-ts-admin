@@ -11,6 +11,12 @@ export const RoleRoutes: Array<RouteConfig> = [
     name: 'alloc-menu',
     component: () => import(/* webpackChunkName: 'role' */ '@/views/role/alloc-menu.vue'),
     props: true
+  },
+  {
+    path: '/allocResource',
+    name: 'alloc-resource',
+    component: () => import(/* webpackChunkName: 'role' */ '@/views/role/alloc-resource.vue'),
+    props: route => ({ query: route.query.roleId })
   }
 ]
 
