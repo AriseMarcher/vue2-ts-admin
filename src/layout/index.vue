@@ -35,10 +35,24 @@ export default Vue.extend({
   min-width: 980px;
 }
 .el-aside {
-  background: #d3dce6;
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .el-header {
   background: #fff;
+}
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0!important;
 }
 .el-main {
   background: #e9eef3;

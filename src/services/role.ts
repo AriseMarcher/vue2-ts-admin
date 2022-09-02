@@ -30,7 +30,7 @@ export const getRoleById = (id: string | number): AxiosPromise => {
 export const saveOrUpdateRole = (data: RoleAddOrEditParams): AxiosPromise => {
   return request({
     method: 'POST',
-    url: 'boss/role/saveOrUpdate',
+    url: '/boss/role/saveOrUpdate',
     data
   })
 }

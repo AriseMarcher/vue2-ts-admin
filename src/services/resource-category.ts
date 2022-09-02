@@ -50,3 +50,14 @@ export const getRoleResources = (roleId: string): AxiosPromise => {
     url: `/boss/resource/getRoleResources?roleId=${roleId}`
   })
 }
+
+export const saveAllocateRoleResources = (data: {
+  resourceIdList: Array<number>
+  roleId: string
+}): AxiosPromise => {
+  return request({
+    method: 'POST',
+    url: '/boss/resource/allocateRoleResources',
+    data
+  })
+}

@@ -72,6 +72,7 @@ export default Vue.extend({
 .aside {
   .el-menu {
     min-height: 100vh;
+    color: #333;
   }
 }
 </style>

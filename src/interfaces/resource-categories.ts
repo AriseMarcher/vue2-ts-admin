@@ -42,6 +42,10 @@ export interface categoriesItem {
   updatedBy: string
   updatedTime: string
   subCategories: Array<categoriesAllItem>
+  mainSelected?: boolean
+  subCheckedCategories: Array<categoriesAllItem>
+  resourceList: Array<categoriesAllItem>
+  isIndeterminate?: boolean
 }
 
 // 基于interface的数据表达
