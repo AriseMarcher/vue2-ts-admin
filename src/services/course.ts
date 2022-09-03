@@ -13,3 +13,13 @@ export const getQueryCourses = (data: {
     data
   })
 }
+
+export const changeState = (data: {
+  courseId: number
+  status: number
+}): AxiosPromise => {
+  return request({
+    method: 'GET',
+    url: `/boss//course/changeState?courseId=${data.courseId}&status=${data.status}`
+  })
+}

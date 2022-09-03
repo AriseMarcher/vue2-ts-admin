@@ -62,7 +62,12 @@
           label="价格"
         >
           <template slot-scope="scope">
-            <el-button size="mini" :type="scope.row.status === 0 ? 'success' : 'danger'">下架</el-button>
+            <el-button
+              size="mini"
+              :loading="scope.row.isStatusLoading"
+              :type="scope.row.status === 0 ? 'success' : 'danger'"
+              @click="handleChangeStatus(scope.row)"
+            >{{ scope.row.status === 0 ? '上架' : '下架' }}</el-button>
             <el-button size="mini">编辑</el-button>
             <el-button size="mini">内容管理</el-button>
           </template>
@@ -85,7 +90,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { getQueryCourses } from '@/services/course'
+import {
+  getQueryCourses,
+  changeState
+} from '@/services/course'
 
 export default Vue.extend({
   name: 'CourseList',
@@ -99,7 +107,8 @@ export default Vue.extend({
       },
       totalCount: 0,
       courseList: [],
-      isLoading: false
+      isLoading: false,
+      isStatusLoading: false
     }
   },
   created () {
@@ -110,6 +119,7 @@ export default Vue.extend({
       this.isLoading = true
       const { data } = await getQueryCourses(this.searchParams)
       if (data.code === '000000') {
+        data.data.records.map((el: { isStatusLoading: boolean }) => { el.isStatusLoading = false })
         this.courseList = data.data.records
         this.totalCount = data.data.total
       }
@@ -127,6 +137,22 @@ export default Vue.extend({
     handleCurrentChange (val: number) {
       this.searchParams.currentPage = val
       this.loadQueryCourses()
+    },
+    async handleChangeStatus (item: any) {
+      if (item.isStatusLoading) return
+      item.isStatusLoading = true
+      const params = {
+        courseId: item.id,
+        status: item.status === 0 ? 1 : 0
+      }
+      const { data } = await changeState(params)
+      if (data.code === '000000') {
+        this.$message.success(data.mesg)
+        this.loadQueryCourses()
+      } else {
+        this.$message.error(data.mesg)
+      }
+      item.isStatusLoading = false
     }
   }
 })
