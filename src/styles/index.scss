@@ -25,3 +25,34 @@ $--color-info: $info-color;
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 // import element default theme
 @import '~element-ui/packages/theme-chalk/src/index';
+
+// components
+
+.status {
+  display: inline-block;
+  cursor: pointer;
+  width: .875rem;
+  height: .875rem;
+  vertical-align: middle;
+  border-radius: 50%;
+
+  &-primary {
+    background: $--color-primary;
+  }
+
+  &-success {
+    background: $--color-success;
+  }
+
+  &-warning {
+    background: $--color-warning;
+  }
+
+  &-danger {
+    background: $--color-danger;
+  }
+
+  &-info {
+    background: $--color-info;
+  }
+}
