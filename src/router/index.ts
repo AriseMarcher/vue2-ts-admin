@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
 import store from '@/store'
 import RoleRoutes from './role'
+import CourseRoutes from './course'
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -39,11 +40,6 @@ const routes: Array<RouteConfig> = [
         component: () => import(/* webpackChunkName: 'resourceCategory' */ '@/views/resource/resourceCategory.vue')
       },
       {
-        path: '/course',
-        name: 'course',
-        component: () => import(/* webpackChunkName: 'course' */ '@/views/course/index.vue')
-      },
-      {
         path: '/user',
         name: 'user',
         component: () => import(/* webpackChunkName: 'user' */ '@/views/user/index.vue')
@@ -68,7 +64,8 @@ const routes: Array<RouteConfig> = [
         name: 'menu-edit',
         component: () => import(/* webpackChunkName: 'menu-create-edit' */ '@/views/menu/menu-edit.vue')
       },
-      ...RoleRoutes
+      ...RoleRoutes,
+      ...CourseRoutes
     ]
   },
   {
