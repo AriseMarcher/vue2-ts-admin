@@ -15,50 +15,51 @@
 
       <el-form label-width="160px">
         <div v-show="activeStep === 0">
-          <el-form-item label="名称">
-            <el-input></el-input>
+          <el-form-item label="课程名称">
+            <el-input v-model="course.courseName"></el-input>
           </el-form-item>
-          <el-form-item label="简介">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="讲师姓名">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="职位">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="讲师简介">
-            <el-input></el-input>
+          <el-form-item label="课程简介">
+            <el-input v-model="course.brief"></el-input>
           </el-form-item>
           <el-form-item label="课程概述">
-            <el-input></el-input>
+            <el-input
+              style="margin-bottom: 10px"
+              type="textarea"
+              v-model="course.previewFirstField"
+              placeholder="概述1"
+            ></el-input>
+            <el-input
+              type="textarea"
+              v-model="course.previewSecondField"
+              placeholder="概述2"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="讲师姓名">
+            <el-input v-model="course.teacherDTO.teacherName"></el-input>
+          </el-form-item>
+          <el-form-item label="讲师简介">
+            <el-input v-model="course.teacherDTO.description"></el-input>
           </el-form-item>
           <el-form-item label="课程排序">
-            <el-input-number label="描述文字"></el-input-number>
+            <el-input-number
+              label="描述文字"
+              v-model="course.sortNum"
+            ></el-input-number>
           </el-form-item>
         </div>
         <div v-show="activeStep === 1">
           <el-form-item label="课程封面">
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+            <!--
+              1. 组件需要根据绑定的数据进行图片预览
+              2. 组件需要把上传成功的图片地址同步到绑定的数据中
+              v-model 的本质还是父子组件通信
+                1. 他会给子组件传递一个名字叫 value 的数据  (props)
+                2. 默认监听 input 事件，修改绑定的数据 (自定义事件)
+             -->
+            <course-image v-model="course.courseListImg"></course-image>
           </el-form-item>
           <el-form-item label="解锁封面">
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+            <course-image v-model="course.courseImgUrl"></course-image>
           </el-form-item>
         </div>
         <div v-show="activeStep === 2">
@@ -139,9 +140,16 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import {
+  saveOrUpdateCourse
+} from '@/services/course'
+import CourseImage from './components/couse-image.vue'
 
 export default Vue.extend({
   name: 'CourseCreate',
+  components: {
+    CourseImage
+  },
   data () {
     return {
       activeStep: 0,
@@ -154,24 +162,43 @@ export default Vue.extend({
       ],
       imageUrl: '',
       activeText: '',
-      isOpenActivity: false
+      isOpenActivity: false,
+      course: {
+        id: 0,
+        courseName: '',
+        brief: '',
+        teacherDTO: {
+          id: 0,
+          courseId: 0,
+          teacherName: '',
+          teacherHeadPicUrl: '',
+          position: '',
+          description: ''
+        },
+        courseDescriptionMarkDown: '',
+        price: 0,
+        discounts: 0,
+        priceTag: '',
+        discountsTag: '',
+        isNew: true,
+        isNesDes: '',
+        courseListImg: '',
+        courseImgUrl: '',
+        sortNum: 0,
+        previewFirstField: '',
+        previewSecondField: '',
+        status: 0,
+        sales: 0,
+        activityCourse: true,
+        activityCourseDTO: {
+          id: 0
+        }
+      }
     }
   },
   methods: {
     handleAvatarSuccess (res: any, file: any) {
       this.imageUrl = URL.createObjectURL(file.raw)
-    },
-    beforeAvatarUpload (file: any) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
     }
   }
 })
@@ -180,28 +207,5 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .el-step {
   cursor: pointer;
-}
-::v-deep .avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-::v-deep .avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
 }
 </style>

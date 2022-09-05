@@ -23,3 +23,26 @@ export const changeState = (data: {
     url: `/boss//course/changeState?courseId=${data.courseId}&status=${data.status}`
   })
 }
+
+export const saveOrUpdateCourse = (data: any): AxiosPromise => {
+  return request({
+    method: 'POST',
+    url: '/boss//course/saveOrUpdateCourse',
+    data
+  })
+}
+
+export const uploadCourseImage = (
+  data: any,
+  onUploadProgress: (progressEvent: any) => void
+): AxiosPromise => {
+  return request({
+    method: 'POST',
+    url: '/boss//course/upload',
+    data,
+    // HTML5新增的上传响应事件 原生的为：progress
+    // e.loaded 已上传的数据大小
+    // e.total 上传文件的总大小
+    onUploadProgress
+  })
+}
