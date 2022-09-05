@@ -132,7 +132,8 @@
         </div>
         <div v-show="activeStep === 4">
           <el-form-item label="课程详情">
-            <el-input type="textarea" v-model="course.courseDescriptionMarkDown"></el-input>
+            <text-editor v-model="course.courseDescriptionMarkDown"></text-editor>
+            <!-- <el-input type="textarea" v-model="course.courseDescriptionMarkDown"></el-input> -->
           </el-form-item>
           <el-form-item label="是否发布">
             <el-switch
@@ -160,11 +161,13 @@ import {
   saveOrUpdateCourse
 } from '@/services/course'
 import CourseImage from './components/couse-image.vue'
+import TextEditor from '@/components/text-editor/index.vue'
 
 export default Vue.extend({
   name: 'CourseCreate',
   components: {
-    CourseImage
+    CourseImage,
+    TextEditor
   },
   data () {
     return {
@@ -191,7 +194,7 @@ export default Vue.extend({
           position: '',
           description: ''
         },
-        courseDescriptionMarkDown: '',
+        courseDescriptionMarkDown: '<h1>Hello</h1>',
         price: 0,
         discounts: 0,
         priceTag: '',
