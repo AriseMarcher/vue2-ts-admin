@@ -37,6 +37,9 @@
           <el-form-item label="讲师姓名">
             <el-input v-model="course.teacherDTO.teacherName"></el-input>
           </el-form-item>
+          <el-form-item label="讲师职位">
+            <el-input v-model="course.teacherDTO.position"></el-input>
+          </el-form-item>
           <el-form-item label="讲师简介">
             <el-input v-model="course.teacherDTO.description"></el-input>
           </el-form-item>
@@ -64,17 +67,17 @@
         </div>
         <div v-show="activeStep === 2">
           <el-form-item label="售卖价格">
-            <el-input>
+            <el-input v-model="course.discounts">
               <template slot="append">元</template>
             </el-input>
           </el-form-item>
           <el-form-item label="商品原件">
-            <el-input>
+            <el-input v-model="course.price">
               <template slot="append">元</template>
             </el-input>
           </el-form-item>
           <el-form-item label="销量">
-            <el-input>
+            <el-input v-model="course.sales">
               <template slot="append">单</template>
             </el-input>
           </el-form-item>
@@ -82,7 +85,7 @@
             <el-input
               type="text"
               placeholder="请输入内容"
-              v-model="activeText"
+              v-model="course.discountsTag"
               maxlength="4"
               show-word-limit
             >
@@ -93,31 +96,35 @@
           秒杀活动
           <el-form-item label="限时秒杀开关">
             <el-switch
-              v-model="isOpenActivity"
+              v-model="course.activityCourse"
               active-color="#13ce66"
               inactive-color="#ff4949">
             </el-switch>
           </el-form-item>
-          <template v-if="isOpenActivity">
+          <template v-if="course.activityCourse">
             <el-form-item label="开始时间">
               <el-date-picker
-                type="datetime"
+                type="date"
+                v-model="course.activityCourseDTO.beginTime"
+                value-format="yyyy-MM-dd"
                 placeholder="选择日期时间">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="结束时间">
               <el-date-picker
-                type="datetime"
+                v-model="course.activityCourseDTO.endTime"
+                type="date"
+                value-format="yyyy-MM-dd"
                 placeholder="选择日期时间">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="秒杀价">
-              <el-input>
+              <el-input v-model="course.activityCourseDTO.amount">
                 <template slot="append">元</template>
               </el-input>
             </el-form-item>
             <el-form-item label="秒杀库存">
-              <el-input>
+              <el-input v-model="course.activityCourseDTO.stock">
                 <template slot="append">个</template>
               </el-input>
             </el-form-item>
@@ -125,13 +132,22 @@
         </div>
         <div v-show="activeStep === 4">
           <el-form-item label="课程详情">
-            <el-input type="textarea"></el-input>
+            <el-input type="textarea" v-model="course.courseDescriptionMarkDown"></el-input>
+          </el-form-item>
+          <el-form-item label="是否发布">
+            <el-switch
+              v-model="course.status"
+              :active-value="1"
+              :inactive-value="0"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
           </el-form-item>
         </div>
         <el-form-item>
           <el-button @click="activeStep--" v-show="activeStep > 0">上一步</el-button>
           <el-button @click="activeStep++" v-show="activeStep < steps.length - 1">下一步</el-button>
-          <el-button type="primary" v-show="activeStep === steps.length - 1">保存</el-button>
+          <el-button type="primary" v-show="activeStep === steps.length - 1" @click="handleSave">保存</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -164,12 +180,12 @@ export default Vue.extend({
       activeText: '',
       isOpenActivity: false,
       course: {
-        id: 0,
+        // id: 0,
         courseName: '',
         brief: '',
         teacherDTO: {
-          id: 0,
-          courseId: 0,
+          // id: 0,
+          // courseId: 0,
           teacherName: '',
           teacherHeadPicUrl: '',
           position: '',
@@ -191,14 +207,26 @@ export default Vue.extend({
         sales: 0,
         activityCourse: true,
         activityCourseDTO: {
-          id: 0
+          // id: 0,
+          // courseId: 0,
+          beginTime: '',
+          endTime: '',
+          amount: 0,
+          stock: 0
         }
       }
     }
   },
+  created () {
+    console.log(this.course)
+  },
   methods: {
     handleAvatarSuccess (res: any, file: any) {
       this.imageUrl = URL.createObjectURL(file.raw)
+    },
+    async handleSave () {
+      const { data } = await saveOrUpdateCourse(this.course)
+      console.log(data)
     }
   }
 })
