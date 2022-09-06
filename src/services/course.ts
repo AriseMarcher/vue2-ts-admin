@@ -34,7 +34,7 @@ export const saveOrUpdateCourse = (data: any): AxiosPromise => {
 
 export const uploadCourseImage = (
   data: any,
-  onUploadProgress: (progressEvent: any) => void
+  onUploadProgress?: (progressEvent: any) => void
 ): AxiosPromise => {
   return request({
     method: 'POST',

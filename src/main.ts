@@ -6,6 +6,7 @@ import ElementUI from 'element-ui'
 
 // 加载全局样式
 import './styles/index.scss'
+import '@wangeditor/editor/dist/css/style.css'
 
 Vue.use(ElementUI)
 
