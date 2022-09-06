@@ -74,7 +74,12 @@
               :type="scope.row.status === 0 ? 'success' : 'danger'"
               @click="handleChangeStatus(scope.row)"
             >{{ scope.row.status === 0 ? '上架' : '下架' }}</el-button>
-            <el-button size="mini">编辑</el-button>
+            <el-button size="mini" @click="$router.push({
+                name: 'course-edit',
+                params: {
+                  courseId: scope.row.id
+                }
+              })">编辑</el-button>
             <el-button size="mini">内容管理</el-button>
           </template>
         </el-table-column>

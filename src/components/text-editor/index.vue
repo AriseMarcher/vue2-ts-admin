@@ -23,6 +23,7 @@ import Vue from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { uploadCourseImage } from '@/services/course'
 import { IEditorConfig } from '@wangeditor/editor'
+import { values } from 'lodash'
 type InsertFnType = (url: string, alt: string, href: string) => void
 
 export default Vue.extend({
@@ -39,7 +40,7 @@ export default Vue.extend({
   data () {
     return {
       editor: null,
-      html: '<p>hello</p>',
+      html: '',
       toolbarConfig: { },
       editorConfig: {
         placeholder: '请输入内容...',
@@ -50,9 +51,12 @@ export default Vue.extend({
       mode: 'default' // or 'simple'
     }
   },
+  watch: {
+    value (val) {
+      this.html = val
+    }
+  },
   created () {
-    this.editorConfig.MENU_CONF.uploadImage.fieldName = 'aoshgoashio'
-    this.html = this.value
     this.editorConfig.MENU_CONF.uploadImage = {
       server: '/boss//course/upload',
       async customUpload (file: File, insertFn: InsertFnType) {

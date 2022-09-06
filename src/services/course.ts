@@ -46,3 +46,13 @@ export const uploadCourseImage = (
     onUploadProgress
   })
 }
+
+export const getCourseById = (courseId: string | number): AxiosPromise => {
+  return request({
+    method: 'GET',
+    url: '/boss//course/getCourseById',
+    params: {
+      courseId
+    }
+  })
+}
