@@ -16,6 +16,12 @@ export const RoleRoutes: Array<RouteConfig> = [
     name: 'course-edit',
     component: () => import(/* webpackChunkName: 'course' */ '@/views/course/course-edit.vue'),
     props: true
+  },
+  {
+    path: '/course/:courseId/section',
+    name: 'course-section',
+    component: () => import(/* webpackChunkName: 'course-section' */ '@/views/course/course-section.vue'),
+    props: true
   }
 ]
 
